@@ -1,15 +1,24 @@
-
 from sqlmodel import Session, select
 from . import models
 import json
 
 
 def get_user_by_username(session: Session, username: str):
-    return session.exec(select(models.User).where(models.User.username == username)).first()
+    return session.exec(
+        select(models.User).where(models.User.username == username)
+    ).first()
 
 
-def create_user(session: Session, username: str, email: str | None, hashed_password: str, role: str = "student"):
-    user = models.User(username=username, email=email, hashed_password=hashed_password, role=role)
+def create_user(
+    session: Session,
+    username: str,
+    email: str | None,
+    hashed_password: str,
+    role: str = "student",
+):
+    user = models.User(
+        username=username, email=email, hashed_password=hashed_password, role=role
+    )
     session.add(user)
     session.commit()
     session.refresh(user)
@@ -19,7 +28,9 @@ def create_user(session: Session, username: str, email: str | None, hashed_passw
 # Tests / Questions
 
 
-def create_test(session: Session, title: str, teacher_id: int, description: str | None = None):
+def create_test(
+    session: Session, title: str, teacher_id: int, description: str | None = None
+):
     t = models.Test(title=title, teacher_id=teacher_id, description=description)
     session.add(t)
     session.commit()
@@ -44,7 +55,9 @@ def get_test(session: Session, test_id: int):
 
 def create_submission(session: Session, test_id: int, student_id: int, answers: list):
     answers_json = json.dumps(answers, ensure_ascii=False)
-    sub = models.Submission(test_id=test_id, student_id=student_id, answers=answers_json)
+    sub = models.Submission(
+        test_id=test_id, student_id=student_id, answers=answers_json
+    )
     session.add(sub)
     session.commit()
     session.refresh(sub)

@@ -9,8 +9,7 @@ class User(SQLModel, table=True):
     username: str = Field(index=True)
     email: Optional[str] = None
     hashed_password: str
-    role: str = Field(default="student") # 'student' or 'teacher'
-
+    role: str = Field(default="student")  # 'student' or 'teacher'
 
     tests: List["Test"] = Relationship(back_populates="teacher")
     submissions: List["Submission"] = Relationship(back_populates="student")
@@ -22,7 +21,6 @@ class Test(SQLModel, table=True):
     description: Optional[str] = None
     teacher_id: int = Field(foreign_key="user.id")
 
-
     teacher: Optional[User] = Relationship(back_populates="tests")
     questions: List["Question"] = Relationship(back_populates="test")
 
@@ -33,7 +31,6 @@ class Question(SQLModel, table=True):
     text: str
     reference_answer: str
 
-
     test: Optional[Test] = Relationship(back_populates="questions")
 
 
@@ -43,9 +40,8 @@ class Submission(SQLModel, table=True):
     student_id: int = Field(foreign_key="user.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
     # We'll store answers as a JSON mapping question_id -> answer text
-    answers: str # JSON string
+    answers: str  # JSON string
     # results: JSON string with similarity/grades per question
     results: Optional[str] = None
-
 
     student: Optional[User] = Relationship(back_populates="submissions")
