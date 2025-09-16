@@ -1,10 +1,9 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from . import db, models, crud, auth, eval
 from .schemas import UserCreate, Token, TestCreate, QuestionCreate, SubmissionCreate
 from sqlmodel import Session
-import json
-
+from .deps import teacher_required, student_required
 
 app = FastAPI(title="Objective AI Assessment")
 
@@ -46,12 +45,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
 # Teacher: create test and questions
 @app.post("/tests")
 def create_test(payload: TestCreate, teacher=Depends(db.get_session)):
-    # teacher must be authenticated separately by using deps in frontend; simple demonstration here
     raise HTTPException(status_code=501, detail="Call /tests/create with auth")
-
-
-from fastapi import Depends
-from .deps import get_current_user, teacher_required, student_required
 
 
 @app.post("/tests/create")

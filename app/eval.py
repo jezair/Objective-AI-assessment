@@ -3,7 +3,6 @@ import os
 import numpy as np
 
 
-# We'll attempt to use sentence-transformers if installed. Otherwise fall back to OpenAI embeddings.
 try:
     from sentence_transformers import SentenceTransformer
 
@@ -15,9 +14,6 @@ except Exception:
 OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 
 
-# cosine similarity util
-
-
 def _cosine(a: List[float], b: List[float]) -> float:
     a = np.array(a)
     b = np.array(b)
@@ -26,16 +22,12 @@ def _cosine(a: List[float], b: List[float]) -> float:
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
 
-# get embeddings
-
-
 def get_embeddings(texts: List[str]) -> List[List[float]]:
     if _SENTENCE_MODEL is not None:
         return _SENTENCE_MODEL.encode(
             texts, show_progress_bar=False, convert_to_numpy=True
         ).tolist()
 
-    # fallback to OpenAI embeddings if key present
     if OPENAI_KEY:
         import requests
 
@@ -52,15 +44,11 @@ def get_embeddings(texts: List[str]) -> List[List[float]]:
         return [item["embedding"] for item in payload["data"]]
 
     raise RuntimeError(
-        "No sentence-transformers installed and OPENAI_API_KEY not set. Install sentence-transformers or set OPENAI_API_KEY."
+        """No sentence-transformers installed and OPENAI_API_KEY not set. Install sentence-transformers or set OPENAI_API_KEY."""
     )
 
 
-# evaluate a list of student answers vs reference answers
-
-
 def evaluate_answers(refs: List[str], answers: List[str]) -> List[Dict]:
-    # compute embeddings (batch)
     texts = refs + answers
     embs = get_embeddings(texts)
     ref_embs = embs[: len(refs)]
@@ -69,7 +57,6 @@ def evaluate_answers(refs: List[str], answers: List[str]) -> List[Dict]:
     results = []
     for i, (r_emb, a_emb) in enumerate(zip(ref_embs, ans_embs)):
         sim = _cosine(r_emb, a_emb)
-        # map similarity (range -1..1) to grade 0..100 (simple linear)
         grade = max(0.0, min(100.0, (sim + 1) / 2 * 100))
         results.append(
             {

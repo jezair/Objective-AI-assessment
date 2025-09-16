@@ -1,6 +1,5 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt
 from .auth import decode_access_token
 from .db import get_session
 from .crud import get_user_by_username
