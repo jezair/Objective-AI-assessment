@@ -19,6 +19,7 @@ requests = "^2.31.0"
 # optional (for local semantic similarity)
 sentence-transformers = {version = "^2.2.2", optional = true}
 bcrypt = "^4.3.0"
+nox = "^2025.5.1"
 
 
 [tool.poetry.extras]
