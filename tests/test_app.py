@@ -1,11 +1,9 @@
-from fastapi.testclient import TestClient
+import pytest
+from httpx import AsyncClient
 from app.main import app
 
-client = TestClient(app)
-
-def test_docs():
-    response = client.get("/docs")
-    assert response.status_code == 200
-
-
-
+@pytest.mark.anyio
+async def test_docs():
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        response = await ac.get("/docs")
+        assert response.status_code == 200

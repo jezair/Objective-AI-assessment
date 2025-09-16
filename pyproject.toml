@@ -5,9 +5,12 @@ description = "FastAPI backend for AI-powered objective assessment"
 authors = ["jezair <max2777@ukr.net>"]
 package-mode = false
 
+packages = [
+    { include = "app" }
+]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.11,<4.0"
 fastapi = "^0.95.0"
 uvicorn = {extras=["standard"], version="^0.22.0"}
 sqlmodel = "^0.0.8"
@@ -20,6 +23,9 @@ requests = "^2.31.0"
 sentence-transformers = {version = "^2.2.2", optional = true}
 bcrypt = "^4.3.0"
 nox = "^2025.5.1"
+httpx = "<0.28"
+numpy = "^2.3.3"
+trio = "^0.31.0"
 
 
 [tool.poetry.extras]
@@ -27,7 +33,7 @@ semantics = ["sentence-transformers"]
 
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.4.2"
+pytest = "^8.3.3"
 
 
 [build-system]
