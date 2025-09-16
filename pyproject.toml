@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "objective-ai-assessment"
+version = "0.1.0"
+description = "FastAPI backend for AI-powered objective assessment"
+authors = ["jezair <max2777@ukr.net>"]
+package-mode = false
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.95.0"
+uvicorn = {extras=["standard"], version="^0.22.0"}
+sqlmodel = "^0.0.8"
+passlib = "^1.7.4"
+python-jose = "^3.3.0"
+python-multipart = "^0.0.6"
+pydantic = "^1.10.9"
+requests = "^2.31.0"
+# optional (for local semantic similarity)
+sentence-transformers = {version = "^2.2.2", optional = true}
+bcrypt = "^4.3.0"
+
+
+[tool.poetry.extras]
+semantics = ["sentence-transformers"]
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.2"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
